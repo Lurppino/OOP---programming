@@ -17,9 +17,9 @@
 
         class Nuoli
         {
-            public Tip Arrowhead { get; set; }
-            public Fletching FletchingType { get; set; }
-            public int ShaftLength { get; set; }
+            private Tip Arrowhead;
+            private Fletching FletchingType;
+            private int ShaftLength;
 
             public Nuoli(Tip arrowhead, Fletching fletching, int shaftLenght)
             {
@@ -28,6 +28,20 @@
                 ShaftLength = shaftLenght;
             }
 
+            public Tip GetArrowhead()
+            {
+                return Arrowhead;
+            }
+
+            public Fletching GetFletchingType()
+            {
+                return FletchingType;
+            }
+
+            public int GetShaftLength()
+            {
+                return ShaftLength;
+            }
             public double PalautaHinta()
             {
                 double Price = 0;
@@ -88,9 +102,13 @@
             int selectedLength = int.Parse(Console.ReadLine());
             if (selectedLength < 60 || selectedLength > 100)
             {
-                Console.WriteLine("Invalid shaft length. Please select 1, 2 or 3.");
+                Console.WriteLine("Invalid shaft length. Please select a value between 60-100cm");
             }
             Nuoli arrow = new Nuoli(arrowhead, fletching, selectedLength);
+
+            Console.WriteLine($"Arrowhead: {arrow.GetArrowhead()}");
+            Console.WriteLine($"Fletching: {arrow.GetFletchingType()}");
+            Console.WriteLine($"Shaft Length: {arrow.GetShaftLength()} cm");
 
             double price = arrow.PalautaHinta();
             Console.WriteLine($"The price of the arrow is: {price} gold.");
