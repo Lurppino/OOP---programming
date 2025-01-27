@@ -68,16 +68,28 @@
 
             Console.WriteLine("Choose an arrowhead type: (1) Wood, (2) Steel, (3) Diamond");
             int selectedTip = int.Parse(Console.ReadLine());
+            if (selectedTip < 1 || selectedTip > 3)
+            {
+                Console.WriteLine("Invalid arrowhead type. Please select 1, 2 or 3.");
+                return;
+            }
             Tip arrowhead = (Tip)selectedTip;
 
             Console.WriteLine("Choose the fletching type: (1) Leaf, (2) Chicken feather, (3) Eagle feather");
             int selectedFletching = int.Parse(Console.ReadLine());
+            if (selectedFletching < 1 || selectedFletching > 3)
+            {
+                Console.WriteLine("Invalid fletching type. Please select 1, 2 or 3.");
+                return;
+            }
             Fletching fletching = (Fletching)selectedFletching;
 
-            Console.WriteLine("Choose the shaft lenght: 60-100cm");
+            Console.WriteLine("Choose the shaft length: 60-100cm");
             int selectedLength = int.Parse(Console.ReadLine());
-
-
+            if (selectedLength < 60 || selectedLength > 100)
+            {
+                Console.WriteLine("Invalid shaft length. Please select 1, 2 or 3.");
+            }
             Nuoli arrow = new Nuoli(arrowhead, fletching, selectedLength);
 
             double price = arrow.PalautaHinta();
