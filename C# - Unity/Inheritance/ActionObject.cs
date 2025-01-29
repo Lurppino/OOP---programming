@@ -1,9 +1,13 @@
 using UnityEngine;
 
-public class ActionObject : Interactable
+public class Ufo : Interactable
 {
+    public string ufoName; 
+    public string[] dialogue;
+
     public override void Interact()
     {
-        Debug.Log("Toiminnallinen objekti aktivoitu!");
+        Debug.Log("Ufo aloittaa keskustelun!");
+        DialogueManager.instance.AddNewDialogue(dialogue, ufoName);
     }
 }
