@@ -43,6 +43,7 @@ namespace PONG
 
                 ballPosition += ballDirection * ballSpeed * deltaTime;
 
+                // Make sure ball doesnt go out of bounds
                 if (ballPosition.X >= screenWidth || ballPosition.X <= 0)
                 {
                     ballDirection.X *= -1;
@@ -75,6 +76,7 @@ namespace PONG
                     ballPosition.Y <= player1Position.Y + paddleHeight)
                 {
                     ballDirection.X *= -1;
+                    ballSpeed *= 1.05f;
 
                     if (ballPosition.Y < player1Position.Y)
                     {
@@ -93,6 +95,7 @@ namespace PONG
                 {
 
                     ballDirection.X *= -1;
+                    ballSpeed *= 1.05f;
 
                     if (ballPosition.Y < player2Position.Y)
                     {
@@ -107,7 +110,7 @@ namespace PONG
                 if (ballPosition.X >= screenWidth)
                 {
                     player1Score++;
-
+                    ballSpeed = 200.0f;
                     ballPosition = new Vector2(screenWidth / 2, screenHeight / 2);
                     ballDirection = new Vector2(-1, 1);
                 }
@@ -115,6 +118,7 @@ namespace PONG
                 if (ballPosition.X <= 0)
                 {
                     player2Score++;
+                    ballSpeed = 200.0f;
                     ballPosition = new Vector2(screenWidth / 2, screenHeight / 2);
                     ballDirection = new Vector2(1, 1);
                 }
@@ -127,11 +131,11 @@ namespace PONG
                 Raylib.DrawRectangle((int)player1Position.X, (int)player1Position.Y, (int)paddleWidth, (int)paddleHeight, Raylib_cs.Color.Red);
                 Raylib.DrawRectangle((int)player2Position.X, (int)player2Position.Y, (int)paddleWidth, (int)paddleHeight, Raylib_cs.Color.Green);
 
-                Raylib.DrawText($"Player 1: {player1Score}", 100, 20, 20, Raylib_cs.Color.White);
-                Raylib.DrawText($"Player 2: {player2Score}", screenWidth - 250, 20, 20, Raylib_cs.Color.White);
+                Raylib.DrawText($"Player 1: {player1Score}", 100, 20, 25, Raylib_cs.Color.White);
+                Raylib.DrawText($"Player 2: {player2Score}", screenWidth - 250, 20, 25, Raylib_cs.Color.White);
 
-                Raylib.DrawText("Controls:\nUp (W) Down (O)", 100, 50, 20, Raylib_cs.Color.White);
-                Raylib.DrawText("Controls:\nUp (I) Down (L)", screenWidth - 250, 50, 20, Raylib_cs.Color.White);
+                Raylib.DrawText("Controls:\nUp (W) Down (O)", 100, 50, 25, Raylib_cs.Color.White);
+                Raylib.DrawText("Controls:\nUp (I) Down (L)", screenWidth - 250, 50, 25, Raylib_cs.Color.White);
 
 
 
