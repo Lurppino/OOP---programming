@@ -134,8 +134,8 @@ namespace PONG
                 Raylib.DrawText($"Player 1: {player1Score}", 100, 20, 25, Raylib_cs.Color.White);
                 Raylib.DrawText($"Player 2: {player2Score}", screenWidth - 250, 20, 25, Raylib_cs.Color.White);
 
-                Raylib.DrawText("Controls:\nUp (W) Down (O)", 100, 50, 25, Raylib_cs.Color.White);
-                Raylib.DrawText("Controls:\nUp (I) Down (L)", screenWidth - 250, 50, 25, Raylib_cs.Color.White);
+                Raylib.DrawText("Controls:\nUp (W) Down (S)", 100, 50, 25, Raylib_cs.Color.White);
+                Raylib.DrawText("Controls:\nUp (O) Down (L)", screenWidth - 250, 50, 25, Raylib_cs.Color.White);
 
 
 
