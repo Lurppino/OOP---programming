@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using Raylib_cs;
@@ -14,7 +15,8 @@ namespace ASTEROIDS
         public static int ScreenHeight = 600;
         public static List<Bullet> enemyBullets = new List<Bullet>();
 
-        public static Vector2 PlayerPosition => player.position;
+        
+        public static Vector2 PlayerPosition => player.Transform.Position;
 
         public static float Deg2Rad = (float)(Math.PI / 180.0f);
         public static int Score = 0;
@@ -28,33 +30,30 @@ namespace ASTEROIDS
         static void Main()
         {
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
-            Raylib.InitAudioDevice();  // Initialize audio device
+            Raylib.InitAudioDevice();
 
+            
             string musicPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Assets", "Audio", "Music.mp3");
-            Console.WriteLine("Attempting to load music from: " + Path.GetFullPath(musicPath));
-
-            string shootSoundPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Assets", "Audio", "Shoot.mp3");
-
-
-
-            Console.WriteLine("Attempting to load music from: " + Path.GetFullPath(musicPath));
-
             if (!File.Exists(musicPath))
             {
                 Console.WriteLine("Error: Music file not found.");
                 return;
             }
-
             music = Raylib.LoadMusicStream(musicPath);
             Raylib.SetMusicVolume(music, 0.2f);
+            Raylib.PlayMusicStream(music);
 
+            
+            string shootSoundPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Assets", "Audio", "Shoot.mp3");
+            if (!File.Exists(shootSoundPath))
+            {
+                Console.WriteLine("Error: Shoot sound file not found.");
+                return;
+            }
             shootSound = Raylib.LoadSound(shootSoundPath);
             Raylib.SetSoundVolume(shootSound, 0.3f);
 
-            Raylib.PlayMusicStream(music);
-            
-
-            Raylib.SetTargetFPS(60);  
+            Raylib.SetTargetFPS(60);
 
             RestartGame();
 
@@ -86,17 +85,18 @@ namespace ASTEROIDS
 
                 player.Draw();
                 DrawBullets();
-                DrawAsteroids();
+                UpdateAndDrawAsteroids();
                 DrawEnemies();
 
                 Raylib.DrawText($"Score: {Score}", ScreenWidth - 100, 10, 20, Color.Gray);
                 Raylib.EndDrawing();
 
-                Raylib.UpdateMusicStream(music);  // Update the music stream to play it
+                Raylib.UpdateMusicStream(music);
             }
 
-            Raylib.UnloadMusicStream(music);  // Unload the music stream when done
-            Raylib.CloseAudioDevice();  // Close the audio device
+            Raylib.UnloadMusicStream(music);
+            Raylib.UnloadSound(shootSound);
+            Raylib.CloseAudioDevice();
         }
 
         static void UpdateBullets()
@@ -112,44 +112,46 @@ namespace ASTEROIDS
 
         static void ShootBullet()
         {
-            float angleRad = player.rotation * Program.Deg2Rad;
-            Vector2 direction = new Vector2((float)Math.Sin(angleRad), (float)-Math.Cos(angleRad));
-            bullets.Add(new Bullet(player.position, direction, 5f));
+            float angleRad = player.Transform.RotationRadians;
+            Vector2 direction = player.Transform.Direction; 
+            bullets.Add(new Bullet(player.Transform.Position, direction, 5f));
         }
 
         static void CheckCollisions()
         {
+            
             foreach (Enemy enemy in enemies)
             {
                 enemy.Update();
-                enemy.Draw();
 
-                float dist = Vector2.Distance(enemy.position, player.position);
-                if (dist < 20f + player.Size / 2f)
+                float dist = Vector2.Distance(enemy.Transform.Position, player.Transform.Position);
+                if (dist < enemy.Collision.Radius + player.Collision.Radius)
                 {
                     player.IsDead = true;
                     return;
                 }
             }
 
+            
             foreach (Asteroid asteroid in asteroids)
             {
-                float dist = Vector2.Distance(asteroid.position, player.position);
-                if (dist < asteroid.Size + player.Size / 2f)
+                float dist = Vector2.Distance(asteroid.Transform.Position, player.Transform.Position);
+                if (dist < asteroid.Collision.Radius + player.Collision.Radius)
                 {
                     player.IsDead = true;
                     return;
                 }
             }
 
-            foreach (Bullet bullet in bullets.ToList())
+            
+            foreach (Bullet bullet in bullets.ToArray())
             {
-                foreach (Asteroid asteroid in asteroids.ToList())
+                foreach (Asteroid asteroid in asteroids.ToArray())
                 {
-                    float dist = Vector2.Distance(bullet.position, asteroid.position);
-                    if (dist < asteroid.Size)
+                    float dist = Vector2.Distance(bullet.Transform.Position, asteroid.Transform.Position);
+                    if (dist < asteroid.Collision.Radius)
                     {
-                        asteroid.BreakIntoSmallerPieces(asteroids, rng);
+                        asteroid.BreakIntoSmallerPieces(asteroids);
                         bullets.Remove(bullet);
                         Score += 10;
                         break;
@@ -166,11 +168,11 @@ namespace ASTEROIDS
                 b.Draw();
         }
 
-        static void DrawAsteroids()
+        static void UpdateAndDrawAsteroids()
         {
             foreach (Asteroid asteroid in asteroids)
             {
-                asteroid.Update();
+                asteroid.Update();  
                 asteroid.Draw();
             }
         }
@@ -178,10 +180,7 @@ namespace ASTEROIDS
         static void DrawEnemies()
         {
             foreach (Enemy enemy in enemies)
-            {
-                enemy.Update();
                 enemy.Draw();
-            }
         }
 
         static void OnAllAsteroidsDestroyed()
@@ -201,11 +200,14 @@ namespace ASTEROIDS
         {
             player = new Player(new Vector2(ScreenWidth / 2f, ScreenHeight / 2f));
             player.IsDead = false;
+
             asteroids.Clear();
             bullets.Clear();
             enemyBullets.Clear();
             enemies.Clear();
+
             Score = 0;
+
             SpawnAsteroids(5);
             enemies.Add(new Enemy(new Vector2(100, 100)));
         }

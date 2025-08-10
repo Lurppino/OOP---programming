@@ -1,34 +1,33 @@
-﻿using ASTEROIDS;
-using System.Numerics;
+﻿using Raylib_cs;
 
-public abstract class Entity
+namespace ASTEROIDS
 {
-    public Vector2 position;
-    public Vector2 velocity;
-    public float rotation;
-    public float radius;
-
-    public Entity(Vector2 position, float rotation)
+    public class Entity
     {
-        this.position = position;
-        this.rotation = rotation;
-        this.velocity = Vector2.Zero;
-        this.radius = 10f;
-    }
+        public Transform Transform;
+        public Collision Collision;
 
-    public virtual void Update()
-    {
-        position += velocity;
-        WrapAroundScreen();
-    }
+        public Entity(Transform transform, Collision collision = null)
+        {
+            Transform = transform;
+            Collision = collision;
+        }
 
-    public abstract void Draw(); 
+        public virtual void Update()
+        {
+            Transform.Move();
+        }
 
-    protected void WrapAroundScreen()
-    {
-        if (position.X > Program.ScreenWidth) position.X = 0;
-        else if (position.X < 0) position.X = Program.ScreenWidth;
-        if (position.Y > Program.ScreenHeight) position.Y = 0;
-        else if (position.Y < 0) position.Y = Program.ScreenHeight;
+        public virtual void Draw()
+        {
+            if (Collision != null)
+            {
+                Raylib.DrawCircleV(Transform.Position, Collision.Radius, Color.Gray);
+            }
+            else
+            {
+                Raylib.DrawCircleV(Transform.Position, 10f, Color.Gray);
+            }
+        }
     }
 }

@@ -6,33 +6,42 @@ namespace ASTEROIDS
 {
     internal class Player : Entity
     {
-        public bool IsDead { get; set; } = false; 
-        public float MaxSpeed = 5f;
-        public float Size = 20f;
-        public float Acceleration = 0.1f;
+        public bool IsDead { get; set; } = false;
+        public float MaxSpeed = 100f;
+        public float Acceleration = 10f;
         public float Drag = 0.98f;
+        public float Size = 20f;
 
-        public Player(Vector2 startPos) : base(startPos, 0f) { }
+        public Player(Vector2 startPos)
+            : base(new Transform(startPos), new Collision(20f)) 
+        {
+        }
 
         public override void Update()
         {
-            if (IsDead) return; 
+            if (IsDead) return;
 
-            if (Raylib.IsKeyDown(KeyboardKey.Left)) rotation -= 3f;
-            if (Raylib.IsKeyDown(KeyboardKey.Right)) rotation += 3f;
+            
+            if (Raylib.IsKeyDown(KeyboardKey.Left))
+                Transform.Turn(-3f * Program.Deg2Rad);
+            if (Raylib.IsKeyDown(KeyboardKey.Right))
+                Transform.Turn(3f * Program.Deg2Rad);
+
+            
             if (Raylib.IsKeyDown(KeyboardKey.Up))
             {
-                float angleRad = rotation * Program.Deg2Rad;
-                velocity.Y -= (float)Math.Cos(angleRad) * Acceleration;
-                velocity.X += (float)Math.Sin(angleRad) * Acceleration;
+                Vector2 acceleration = Transform.Direction * Acceleration;
+                Transform.Velocity += acceleration;
 
-                if (velocity.Length() > MaxSpeed)
-                    velocity = Vector2.Normalize(velocity) * MaxSpeed;
+                if (Transform.Velocity.Length() > MaxSpeed)
+                    Transform.Velocity = Vector2.Normalize(Transform.Velocity) * MaxSpeed;
             }
 
-            ApplyDrag();
-            position += velocity;
-            WrapAroundScreen();
+         
+
+            Transform.Velocity *= Drag;
+        
+            Transform.Move();
         }
 
         public override void Draw()
@@ -41,31 +50,28 @@ namespace ASTEROIDS
             Vector2 left = new Vector2(-Size / 2, Size / 2);
             Vector2 right = new Vector2(Size / 2, Size / 2);
 
-            tip = RotateVector(tip, rotation);
-            left = RotateVector(left, rotation);
-            right = RotateVector(right, rotation);
+            
+            tip = RotateVector(tip, Transform.RotationRadians * (180f / (float)Math.PI));
+            left = RotateVector(left, Transform.RotationRadians * (180f / (float)Math.PI));
+            right = RotateVector(right, Transform.RotationRadians * (180f / (float)Math.PI));
 
-            tip += position;
-            left += position;
-            right += position;
-            Raylib.DrawTriangle(tip, left, right, Raylib_cs.Color.White);
+            tip += Transform.Position;
+            left += Transform.Position;
+            right += Transform.Position;
+
+            Raylib.DrawTriangle(tip, left, right, Color.White);
         }
 
-        public static Vector2 RotateVector(Vector2 vector, float angle)
+        private Vector2 RotateVector(Vector2 vector, float angleDegrees)
         {
-            float rad = angle * Program.Deg2Rad;
+            float rad = angleDegrees * Program.Deg2Rad;
             float cosA = (float)Math.Cos(rad);
             float sinA = (float)Math.Sin(rad);
 
-            return new Vector2(vector.X * cosA - vector.Y * sinA, vector.X * sinA + vector.Y * cosA);
-        }
-
-        protected void ApplyDrag()
-        {
-            if (velocity.Length() > 0)
-            {
-                velocity *= Drag;
-            }
+            return new Vector2(
+                vector.X * cosA - vector.Y * sinA,
+                vector.X * sinA + vector.Y * cosA
+            );
         }
     }
 }

@@ -5,30 +5,30 @@ using System.Collections.Generic;
 
 namespace ASTEROIDS
 {
-    class Asteroid : Entity
+    internal class Asteroid : Entity
     {
         public float Size;
         public Color AsteroidColor = Color.Gray;
+        private Random rng = new Random();
 
-        public Asteroid(Vector2 position, float size, Vector2 direction) : base(position, 0f)
+        public Asteroid(Vector2 position, float size, Vector2 direction)
+            : base(new Transform(position), new Collision(size))
         {
             Size = size;
-            radius = size;
-            velocity = direction;
+            Transform.Velocity = Vector2.Normalize(direction) * 50f;
         }
 
         public override void Update()
         {
-            position += velocity;
-            WrapAroundScreen();
+            Transform.Move();
         }
 
         public override void Draw()
         {
-            Raylib.DrawCircleV(position, Size, AsteroidColor);
+            Raylib.DrawCircleV(Transform.Position, Size, AsteroidColor);
         }
 
-        public void BreakIntoSmallerPieces(List<Asteroid> asteroids, Random rng)
+        public void BreakIntoSmallerPieces(List<Asteroid> asteroids)
         {
             if (Size <= 20)
             {
@@ -37,8 +37,21 @@ namespace ASTEROIDS
             }
 
             asteroids.Remove(this);
-            asteroids.Add(new Asteroid(position, Size / 2, new Vector2((float)(rng.NextDouble() * 2 - 1), (float)(rng.NextDouble() * 2 - 1))));
-            asteroids.Add(new Asteroid(position, Size / 2, new Vector2((float)(rng.NextDouble() * 2 - 1), (float)(rng.NextDouble() * 2 - 1))));
+
+            for (int i = 0; i < 2; i++)
+            {
+                Vector2 randomDirection = new Vector2(
+                    (float)(rng.NextDouble() * 2 - 1),
+                    (float)(rng.NextDouble() * 2 - 1)
+                );
+
+                if (randomDirection == Vector2.Zero)
+                    randomDirection = new Vector2(1, 0); 
+
+                randomDirection = Vector2.Normalize(randomDirection) * 2f;
+
+                asteroids.Add(new Asteroid(Transform.Position, Size / 2, randomDirection));
+            }
         }
     }
 }

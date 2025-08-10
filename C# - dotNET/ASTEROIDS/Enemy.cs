@@ -1,30 +1,33 @@
 ﻿using Raylib_cs;
-using System;
 using System.Numerics;
 
 namespace ASTEROIDS
 {
     internal class Enemy : Entity
     {
-        public float MaxSpeed = 1f;
+        public float MaxSpeed = 90f;
 
-        public Enemy(Vector2 position) : base(position, 0f)
+        public Enemy(Vector2 position)
+            : base(new Transform(position), new Collision(20f)) 
         {
-            velocity = new Vector2(0, 0);
+            Transform.Velocity = Vector2.Zero;
         }
 
         public override void Update()
         {
-            Vector2 direction = Program.PlayerPosition - position;
-            direction = Vector2.Normalize(direction);
-            velocity = direction * MaxSpeed;
+            Vector2 direction = Program.PlayerPosition - Transform.Position;
+            if (direction != Vector2.Zero)
+            {
+                direction = Vector2.Normalize(direction);
+                Transform.Velocity = direction * MaxSpeed;
+            }
 
-            position += velocity;
+            Transform.Move();
         }
 
         public override void Draw()
         {
-            Raylib.DrawCircleV(position, 20f, Color.Red);
+            Raylib.DrawCircleV(Transform.Position, 20f, Color.Red);
         }
     }
 }

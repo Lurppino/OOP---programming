@@ -3,28 +3,33 @@ using System.Numerics;
 
 namespace ASTEROIDS
 {
-    public class Bullet : Entity
+    internal class Bullet : Entity
     {
-        public float Speed = 5f;
+        public float Speed;
 
-        public Bullet(Vector2 position, Vector2 direction, float speed) : base(position, 0f)
+        public Bullet(Vector2 position, Vector2 direction, float speed)
+            : base(new Transform(position), new Collision(5f))
         {
-            velocity = direction * speed;
+            Speed = speed;
+            Transform.Velocity = Vector2.Normalize(direction) * 200f;
+            Transform.WrapsAround = false; 
         }
 
         public override void Update()
         {
-            position += velocity;
+            Transform.Move();
         }
 
         public override void Draw()
         {
-            Raylib.DrawCircleV(position, 5f, Color.White);
+            Raylib.DrawCircleV(Transform.Position, 5f, Color.White);
         }
 
         public bool IsDead()
         {
-            return position.X < 0 || position.X > Program.ScreenWidth || position.Y < 0 || position.Y > Program.ScreenHeight;
+            
+            return Transform.Position.X < 0 || Transform.Position.X > Program.ScreenWidth ||
+                   Transform.Position.Y < 0 || Transform.Position.Y > Program.ScreenHeight;
         }
     }
 }
