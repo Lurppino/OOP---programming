@@ -1,13 +1,14 @@
 ﻿using Raylib_cs;
+using LukaLib;
 
 namespace ASTEROIDS
 {
     public class Entity
     {
-        public Transform Transform;
+        public Transform2d Transform;  
         public Collision Collision;
 
-        public Entity(Transform transform, Collision collision = null)
+        public Entity(Transform2d transform, Collision collision = null) 
         {
             Transform = transform;
             Collision = collision;
