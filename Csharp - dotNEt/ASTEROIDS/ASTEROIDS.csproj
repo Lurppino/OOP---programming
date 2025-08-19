@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Työpöytä\Komponenttikirjasto\LukaLib\LukaLib\LukaLib.csproj" />
+    <ProjectReference Include="..\Komponentti kirjasto\LukaLib\LukaLib.csproj" />
   </ItemGroup>
 
 </Project>
