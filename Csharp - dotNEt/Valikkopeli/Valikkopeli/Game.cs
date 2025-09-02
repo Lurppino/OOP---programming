@@ -6,9 +6,7 @@ namespace Valikkopeli
     public class Game
     {
         public GameState currentState;
-        private MenuCreator menu;
 
-        // Example game variables
         private float x = 100;
         private float y = 100;
         private float dx = 3;
@@ -17,15 +15,37 @@ namespace Valikkopeli
         public Game()
         {
             currentState = GameState.Menu;
-            menu = new MenuCreator(
-                300,
-                200, 
-                200,
-                40,
-                0,  
-                20  
+        }
+
+        public void DrawMainMenu()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Black);
+
+            // Create a MenuCreator
+            MenuCreator creator = new MenuCreator(
+                300, // startX
+                200, // startY
+                200, // buttonWidth
+                40,  // buttonHeight
+                0,   // spacingX
+                20   // spacingY
             );
 
+            creator.Label("Valikkopeli");
+            creator.Label("Use arrow keys and Enter to play");
+
+            if (creator.Button("Start Game"))
+            {
+                currentState = GameState.GameLoop;
+            }
+
+            if (creator.Button("Quit"))
+            {
+                currentState = GameState.Quit;
+            }
+
+            Raylib.EndDrawing();
         }
 
         public void UpdateGame()
@@ -39,35 +59,24 @@ namespace Valikkopeli
                 if (y < 0 || y > Raylib.GetScreenHeight()) dy *= -1;
 
                 if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+                {
                     currentState = GameState.Menu;
+                }
             }
         }
 
         public void DrawGame()
         {
-            Raylib.BeginDrawing();
-
-            if (currentState == GameState.Menu)
+            if (currentState == GameState.GameLoop)
             {
-                Raylib.ClearBackground(Color.Black);
-
-                menu.Label("Valikkopeli"); 
-                menu.Label("Use arrow keys and Enter to play");
-
-                if (menu.Button("Start Game"))
-                    currentState = GameState.GameLoop;
-
-                if (menu.Button("Quit"))
-                    currentState = GameState.Quit;
-            }
-            else if (currentState == GameState.GameLoop)
-            {
+                Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.DarkGray);
+
                 Raylib.DrawText("Game running! Press ESC to return to menu", 10, 10, 20, Color.Green);
                 Raylib.DrawCircle((int)x, (int)y, 20, Color.Red);
-            }
 
-            Raylib.EndDrawing();
+                Raylib.EndDrawing();
+            }
         }
     }
 }

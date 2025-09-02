@@ -12,8 +12,17 @@ class Program
 
         while (!Raylib.WindowShouldClose() && peli.currentState != GameState.Quit)
         {
-            peli.UpdateGame();
-            peli.DrawGame();
+            // Menu
+            if (peli.currentState == GameState.Menu)
+            {
+                peli.DrawMainMenu();
+            }
+            // Game loop
+            else if (peli.currentState == GameState.GameLoop)
+            {
+                peli.UpdateGame();
+                peli.DrawGame();
+            }
         }
 
         Raylib.CloseWindow();
