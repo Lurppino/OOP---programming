@@ -1,5 +1,4 @@
 ﻿using Raylib_cs;
-using System;
 using Valikkopeli;
 
 class Program
@@ -11,16 +10,10 @@ class Program
 
         Game peli = new Game();
 
-        while (!Raylib.WindowShouldClose())
+        while (!Raylib.WindowShouldClose() && peli.currentState != GameState.Quit)
         {
             peli.UpdateGame();
-
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.Black);
-
             peli.DrawGame();
-
-            Raylib.EndDrawing();
         }
 
         Raylib.CloseWindow();
