@@ -10,6 +10,9 @@ namespace ASTEROIDS
 {
     internal class Program
     {
+        static Stack<GameState> stateStack = new Stack<GameState>();
+        static GameState CurrentState => stateStack.Peek();
+
         static Music music;
         static Sound shootSound;
 
@@ -31,6 +34,8 @@ namespace ASTEROIDS
 
         static void Main()
         {
+            stateStack.Push(GameState.MainMenu);
+
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
             Raylib.InitAudioDevice();
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASTEROIDS", "ASTEROIDS.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukaLib", "..\Komponentti kirjasto\LukaLib\LukaLib.csproj", "{3ADFE80A-9574-69D3-7E2C-83432C2B3775}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayGuiCreator", "..\RayGuiCreatorRepositorio\RayGuiCreator\RayGuiCreator\RayGuiCreator.csproj", "{407CCBE6-2AF8-08BA-911A-9811A3AD9D02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3ADFE80A-9574-69D3-7E2C-83432C2B3775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ADFE80A-9574-69D3-7E2C-83432C2B3775}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ADFE80A-9574-69D3-7E2C-83432C2B3775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407CCBE6-2AF8-08BA-911A-9811A3AD9D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407CCBE6-2AF8-08BA-911A-9811A3AD9D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407CCBE6-2AF8-08BA-911A-9811A3AD9D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407CCBE6-2AF8-08BA-911A-9811A3AD9D02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Työpöytä\Komponenttikirjasto\LukaLib\LukaLib\LukaLib.csproj" />
     <ProjectReference Include="..\Komponentti kirjasto\LukaLib\LukaLib.csproj" />
+    <ProjectReference Include="..\RayGuiCreatorRepositorio\RayGuiCreator\RayGuiCreator\RayGuiCreator.csproj" />
   </ItemGroup>
 
 </Project>
