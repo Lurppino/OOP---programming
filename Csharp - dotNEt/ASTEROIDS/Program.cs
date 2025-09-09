@@ -13,6 +13,10 @@ namespace ASTEROIDS
         static Stack<GameState> stateStack = new Stack<GameState>();
         static GameState CurrentState => stateStack.Peek();
 
+        static MenuCreator mainMenu = new MenuCreator(250, 200, 300, 50, 20);
+        static MenuCreator optionsMenu = new MenuCreator(250, 200, 300, 50, 20);
+        static MenuCreator pauseMenu = new MenuCreator(250, 200, 300, 50, 20);
+
         static Music music;
         static Sound shootSound;
 
@@ -277,5 +281,75 @@ namespace ASTEROIDS
                 asteroids.Add(new Asteroid(pos, size, dir));
             }
         }
+
+        static void DrawMainMenu()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Black);
+
+            mainMenu.Label("ASTEROIDS");
+            mainMenu.Label("Use arrows to move, Space to shoot");
+
+            if (mainMenu.Button("Start Game"))
+            {
+                RestartGame();
+                stateStack.Push(GameState.GameLoop);
+            }
+
+            if (mainMenu.Button("Options"))
+            {
+                stateStack.Push(GameState.OptionsMenu);
+            }
+
+            if (mainMenu.Button("Quit"))
+            {
+                stateStack.Push(GameState.Quit);
+            }
+
+            Raylib.EndDrawing();
+        }
+
+        static void DrawOptionsMenu()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.DarkGray);
+
+            optionsMenu.Label("OPTIONS");
+            optionsMenu.Label("Adjust your settings");
+
+            if (optionsMenu.Button("Back"))
+            {
+                stateStack.Pop();
+            }
+
+            Raylib.EndDrawing();
+        }
+
+        static void DrawPauseMenu()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.DarkBlue);
+
+            pauseMenu.Label("PAUSE MENU");
+
+            if (pauseMenu.Button("Resume"))
+            {
+                stateStack.Pop();
+            }
+
+            if (pauseMenu.Button("Options"))
+            {
+                stateStack.Push(GameState.OptionsMenu);
+            }
+
+            if (pauseMenu.Button("Main Menu"))
+            {
+                stateStack.Clear();
+                stateStack.Push(GameState.MainMenu);
+            }
+
+            Raylib.EndDrawing();
+        }
+
     }
 }
