@@ -2,7 +2,7 @@
 {
     public enum GameState
     {
-        Menu,
+        MainMenu,
         GameLoop,
         OptionsMenu,
         PauseMenu,

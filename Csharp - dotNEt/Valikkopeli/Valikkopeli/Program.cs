@@ -3,16 +3,31 @@ using Valikkopeli;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         Raylib.InitWindow(800, 600, "Valikkopeli");
         Raylib.SetTargetFPS(60);
 
-        Game peli = new Game();
+        Game game = new Game();
 
-        while (!Raylib.WindowShouldClose() && peli.currentState != GameState.Quit)
+        while (!Raylib.WindowShouldClose() && game.CurrentState != GameState.Quit)
         {
-            peli.RunFrame();
+            switch (game.CurrentState)
+            {
+                case GameState.MainMenu:
+                    game.DrawMainMenu();
+                    break;
+                case GameState.GameLoop:
+                    game.UpdateGame();
+                    game.DrawGame();
+                    break;
+                case GameState.OptionsMenu:
+                    game.DrawOptionsMenu();
+                    break;
+                case GameState.PauseMenu:
+                    game.DrawPauseMenu();
+                    break;
+            }
         }
 
         Raylib.CloseWindow();

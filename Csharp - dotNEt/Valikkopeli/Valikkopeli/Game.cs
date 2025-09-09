@@ -1,30 +1,30 @@
-﻿using Raylib_cs;
-using RayGuiCreator;
-using System;
+﻿using RayGuiCreator;
+using Raylib_cs;
+using System.Collections.Generic;
 
 namespace Valikkopeli
 {
     public class Game
     {
-        public GameState currentState;
-
-        private float x = 100;
-        private float y = 100;
-        private float dx = 3;
-        private float dy = 3;
-
-        private OptionsMenu myOptionsMenu;
-        private PauseMenu myPauseMenu;
+        private Stack<GameState> stateStack;
 
         public Game()
         {
-            currentState = GameState.Menu;
+            stateStack = new Stack<GameState>();
+            stateStack.Push(GameState.MainMenu);
+        }
 
-            myOptionsMenu = new OptionsMenu();
-            myPauseMenu = new PauseMenu();
+        public GameState CurrentState => stateStack.Peek();
 
-            myOptionsMenu.BackButtonPressedEvent += OnOptionsBackButtonPressed;
-            myPauseMenu.BackButtonPressedEvent += OnPauseBackButtonPressed;
+        private void ChangeState(GameState newState)
+        {
+            stateStack.Push(newState);
+        }
+
+        private void GoBack()
+        {
+            if (stateStack.Count > 1)
+                stateStack.Pop();
         }
 
         public void DrawMainMenu()
@@ -32,26 +32,67 @@ namespace Valikkopeli
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
 
-            MenuCreator creator = new MenuCreator(
-                300, 200, 200, 40, 0, 20
-            );
-
+            MenuCreator creator = new MenuCreator(100, 100, 200, 50, 80);
             creator.Label("Valikkopeli");
-            creator.Label("Use ESC to pause");
+            creator.Label("Press buttons to continue...");
 
             if (creator.Button("Start Game"))
             {
-                currentState = GameState.GameLoop;
+                ChangeState(GameState.GameLoop);
             }
 
             if (creator.Button("Options"))
             {
-                currentState = GameState.OptionsMenu;
+                ChangeState(GameState.OptionsMenu);
             }
 
             if (creator.Button("Quit"))
             {
-                currentState = GameState.Quit;
+                ChangeState(GameState.Quit);
+            }
+
+            Raylib.EndDrawing();
+        }
+
+        public void DrawOptionsMenu()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.DarkGray);
+
+            MenuCreator creator = new MenuCreator(100, 100, 200, 50, 80);
+            creator.Label("Options");
+            creator.Label("Adjust settings here...");
+
+            if (creator.Button("Back"))
+            {
+                GoBack();
+            }
+
+            Raylib.EndDrawing();
+        }
+
+        public void DrawPauseMenu()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.DarkBlue);
+
+            MenuCreator creator = new MenuCreator(100, 100, 200, 50, 80);
+            creator.Label("Pause Menu");
+
+            if (creator.Button("Resume"))
+            {
+                GoBack();
+            }
+
+            if (creator.Button("Options"))
+            {
+                ChangeState(GameState.OptionsMenu);
+            }
+
+            if (creator.Button("Main Menu"))
+            {
+                stateStack.Clear();
+                stateStack.Push(GameState.MainMenu);
             }
 
             Raylib.EndDrawing();
@@ -59,63 +100,21 @@ namespace Valikkopeli
 
         public void UpdateGame()
         {
-            if (currentState == GameState.GameLoop)
+            if (Raylib.IsKeyPressed(KeyboardKey.Escape))
             {
-                x += dx;
-                y += dy;
-
-                if (x < 0 || x > Raylib.GetScreenWidth()) dx *= -1;
-                if (y < 0 || y > Raylib.GetScreenHeight()) dy *= -1;
-
-                if (Raylib.IsKeyPressed(KeyboardKey.Escape))
-                {
-                    currentState = GameState.PauseMenu;
-                }
+                ChangeState(GameState.PauseMenu);
             }
         }
 
         public void DrawGame()
         {
-            if (currentState == GameState.GameLoop)
-            {
-                Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.DarkGray);
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.DarkGreen);
 
-                Raylib.DrawText("Game running! Press ESC to pause", 10, 10, 20, Color.Green);
-                Raylib.DrawCircle((int)x, (int)y, 20, Color.Red);
+            Raylib.DrawText("Game is running!", 100, 100, 24, Color.White);
+            Raylib.DrawText("Press ESC to pause", 100, 140, 24, Color.White);
 
-                Raylib.EndDrawing();
-            }
-        }
-
-        private void OnOptionsBackButtonPressed(object sender, EventArgs args)
-        {
-            currentState = GameState.Menu;
-        }
-
-        private void OnPauseBackButtonPressed(object sender, EventArgs args)
-        {
-            currentState = GameState.GameLoop;
-        }
-
-        public void RunFrame()
-        {
-            switch (currentState)
-            {
-                case GameState.Menu:
-                    DrawMainMenu();
-                    break;
-                case GameState.GameLoop:
-                    UpdateGame();
-                    DrawGame();
-                    break;
-                case GameState.OptionsMenu:
-                    myOptionsMenu.DrawMenu();
-                    break;
-                case GameState.PauseMenu:
-                    myPauseMenu.DrawMenu();
-                    break;
-            }
+            Raylib.EndDrawing();
         }
     }
 }
