@@ -68,40 +68,24 @@ namespace ASTEROIDS
 
             RestartGame();
 
-            while (!Raylib.WindowShouldClose())
+            while (!Raylib.WindowShouldClose() && CurrentState != GameState.Quit)
             {
-                if (player.IsDead)
+                switch (CurrentState)
                 {
-                    RestartGame();
+                    case GameState.MainMenu:
+                        DrawMainMenu();
+                        break;
+                    case GameState.GameLoop:
+                        UpdateGameLoop();
+                        DrawGameLoop();
+                        break;
+                    case GameState.OptionsMenu:
+                        DrawOptionsMenu();
+                        break;
+                    case GameState.PauseMenu:
+                        DrawPauseMenu();
+                        break;
                 }
-
-                player.Update();
-                UpdateBullets();
-
-                if (Raylib.IsKeyPressed(KeyboardKey.Space))
-                {
-                    ShootBullet();
-                    Raylib.PlaySound(shootSound);
-                }
-
-                CheckCollisions();
-                
-
-                if (asteroids.Count == 0)
-                {
-                    OnAllAsteroidsDestroyed();
-                }
-
-                Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.Black);
-
-                player.Draw();
-                DrawBullets();
-                UpdateAndDrawAsteroids();
-                DrawEnemies();
-
-                Raylib.DrawText($"Score: {Score}", ScreenWidth - 100, 10, 20, Color.Gray);
-                Raylib.EndDrawing();
 
                 Raylib.UpdateMusicStream(music);
             }
@@ -350,6 +334,50 @@ namespace ASTEROIDS
 
             Raylib.EndDrawing();
         }
+        static void UpdateGameLoop()
+        {
+            if (player.IsDead)
+            {
+                RestartGame();
+            }
+
+            player.Update();
+            UpdateBullets();
+
+            if (Raylib.IsKeyPressed(KeyboardKey.Space))
+            {
+                ShootBullet();
+                Raylib.PlaySound(shootSound);
+            }
+
+            CheckCollisions();
+
+            if (asteroids.Count == 0)
+            {
+                OnAllAsteroidsDestroyed();
+            }
+
+            if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+            {
+                stateStack.Push(GameState.PauseMenu);
+            }
+        }
+
+        static void DrawGameLoop()
+        {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Black);
+
+            player.Draw();
+            DrawBullets();
+            UpdateAndDrawAsteroids();
+            DrawEnemies();
+
+            Raylib.DrawText($"Score: {Score}", ScreenWidth - 100, 10, 20, Color.Gray);
+
+            Raylib.EndDrawing();
+        }
+
 
     }
 }
