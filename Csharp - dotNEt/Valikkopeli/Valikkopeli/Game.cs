@@ -1,5 +1,6 @@
 ﻿using Raylib_cs;
 using RayGuiCreator;
+using System;
 
 namespace Valikkopeli
 {
@@ -12,9 +13,18 @@ namespace Valikkopeli
         private float dx = 3;
         private float dy = 3;
 
+        private OptionsMenu myOptionsMenu;
+        private PauseMenu myPauseMenu;
+
         public Game()
         {
             currentState = GameState.Menu;
+
+            myOptionsMenu = new OptionsMenu();
+            myPauseMenu = new PauseMenu();
+
+            myOptionsMenu.BackButtonPressedEvent += OnOptionsBackButtonPressed;
+            myPauseMenu.BackButtonPressedEvent += OnPauseBackButtonPressed;
         }
 
         public void DrawMainMenu()
@@ -22,22 +32,21 @@ namespace Valikkopeli
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
 
-            // Create a MenuCreator
             MenuCreator creator = new MenuCreator(
-                300, // startX
-                200, // startY
-                200, // buttonWidth
-                40,  // buttonHeight
-                0,   // spacingX
-                20   // spacingY
+                300, 200, 200, 40, 0, 20
             );
 
             creator.Label("Valikkopeli");
-            creator.Label("Use arrow keys and Enter to play");
+            creator.Label("Use ESC to pause");
 
             if (creator.Button("Start Game"))
             {
                 currentState = GameState.GameLoop;
+            }
+
+            if (creator.Button("Options"))
+            {
+                currentState = GameState.OptionsMenu;
             }
 
             if (creator.Button("Quit"))
@@ -60,7 +69,7 @@ namespace Valikkopeli
 
                 if (Raylib.IsKeyPressed(KeyboardKey.Escape))
                 {
-                    currentState = GameState.Menu;
+                    currentState = GameState.PauseMenu;
                 }
             }
         }
@@ -72,10 +81,40 @@ namespace Valikkopeli
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.DarkGray);
 
-                Raylib.DrawText("Game running! Press ESC to return to menu", 10, 10, 20, Color.Green);
+                Raylib.DrawText("Game running! Press ESC to pause", 10, 10, 20, Color.Green);
                 Raylib.DrawCircle((int)x, (int)y, 20, Color.Red);
 
                 Raylib.EndDrawing();
+            }
+        }
+
+        private void OnOptionsBackButtonPressed(object sender, EventArgs args)
+        {
+            currentState = GameState.Menu;
+        }
+
+        private void OnPauseBackButtonPressed(object sender, EventArgs args)
+        {
+            currentState = GameState.GameLoop;
+        }
+
+        public void RunFrame()
+        {
+            switch (currentState)
+            {
+                case GameState.Menu:
+                    DrawMainMenu();
+                    break;
+                case GameState.GameLoop:
+                    UpdateGame();
+                    DrawGame();
+                    break;
+                case GameState.OptionsMenu:
+                    myOptionsMenu.DrawMenu();
+                    break;
+                case GameState.PauseMenu:
+                    myPauseMenu.DrawMenu();
+                    break;
             }
         }
     }
