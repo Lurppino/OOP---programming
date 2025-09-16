@@ -43,9 +43,9 @@ namespace ASTEROIDS
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
             Raylib.InitAudioDevice();
 
-            mainMenu = new MenuCreator(250, 200, 300, 50, 20);
-            optionsMenu = new MenuCreator(250, 200, 300, 50, 20);
-            pauseMenu = new MenuCreator(250, 200, 300, 50, 20);
+            mainMenu = new MenuCreator(250, 100, 40, 200, 10);
+            optionsMenu = new MenuCreator(250, 100, 40, 200, 10);
+            pauseMenu = new MenuCreator(250, 100, 40, 200, 10);
 
 
             string musicPath = "Assets/Audio/Music.mp3";
