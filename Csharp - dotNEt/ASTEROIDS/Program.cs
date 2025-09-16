@@ -304,6 +304,10 @@ namespace ASTEROIDS
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.DarkGray);
 
+            optionsMenu.ResetPosition();
+
+            optionsMenu.ResetPosition();
+
             optionsMenu.Label("OPTIONS");
             optionsMenu.Label("Adjust your settings");
 
@@ -319,6 +323,8 @@ namespace ASTEROIDS
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.DarkBlue);
+
+            optionsMenu.ResetPosition();
 
             pauseMenu.Label("PAUSE MENU");
 
@@ -363,7 +369,7 @@ namespace ASTEROIDS
                 OnAllAsteroidsDestroyed();
             }
 
-            if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+            if (Raylib.IsKeyPressed(KeyboardKey.P))
             {
                 stateStack.Push(GameState.PauseMenu);
             }
