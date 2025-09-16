@@ -275,6 +275,8 @@ namespace ASTEROIDS
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
 
+            mainMenu.ResetPosition();
+
             mainMenu.Label("ASTEROIDS");
             mainMenu.Label("Use arrows to move, Space to shoot");
 

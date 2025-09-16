@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Kirjastot\RayGuiCreatorRepositorio\RayGuiCreator\RayGuiCreator\RayGuiCreator.csproj" />
     <ProjectReference Include="..\Komponentti kirjasto\LukaLib\LukaLib.csproj" />
     <ProjectReference Include="..\RayGuiCreatorRepositorio\RayGuiCreator\RayGuiCreator\RayGuiCreator.csproj" />
   </ItemGroup>
