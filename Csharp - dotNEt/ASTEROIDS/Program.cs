@@ -43,8 +43,9 @@ namespace ASTEROIDS
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
             Raylib.InitAudioDevice();
 
-            
-            string musicPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Assets", "Audio", "Music.mp3");
+
+
+            string musicPath = "Assets/Audio/Music.mp3";
             if (!File.Exists(musicPath))
             {
                 Console.WriteLine("Error: Music file not found.");
@@ -55,7 +56,7 @@ namespace ASTEROIDS
             Raylib.PlayMusicStream(music);
 
             
-            string shootSoundPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Assets", "Audio", "Shoot.mp3");
+            string shootSoundPath = "Assets/Audio/Shoot.mp3";
             if (!File.Exists(shootSoundPath))
             {
                 Console.WriteLine("Error: Shoot sound file not found.");

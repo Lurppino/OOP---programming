@@ -16,4 +16,16 @@
     <ProjectReference Include="..\RayGuiCreatorRepositorio\RayGuiCreator\RayGuiCreator\RayGuiCreator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Assets\Audio\Music.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Audio\Shoot.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Audio\Shoot.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
