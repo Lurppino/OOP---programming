@@ -326,7 +326,6 @@ namespace ASTEROIDS
 
             foreach (var star in stars)
             {
-                star.Update();
                 star.Draw();
             }
 
