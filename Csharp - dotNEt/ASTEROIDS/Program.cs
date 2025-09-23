@@ -79,7 +79,7 @@ namespace ASTEROIDS
                 switch (CurrentState)
                 {
                     case GameState.MainMenu:
-                        DrawMainMenu();
+                        MainMenuScreen.Draw(mainMenu, stateStack, RestartGame);
                         break;
 
                     case GameState.GameLoop:
@@ -88,11 +88,10 @@ namespace ASTEROIDS
                         break;
 
                     case GameState.OptionsMenu:
-                        DrawOptionsMenu();
+                        OptionsMenuScreen.Draw(optionsMenu, stateStack);
                         break;
 
                     case GameState.PauseMenu:
-                        Raylib.ClearBackground(Color.DarkBlue);
                         PauseMenuScreen.Draw(pauseMenu, stateStack);
                         break;
                 }
@@ -282,56 +281,6 @@ namespace ASTEROIDS
                 asteroids.Add(new Asteroid(pos, size, dir));
             }
         }
-
-        static void DrawMainMenu()
-        {
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.Black);
-
-            mainMenu.ResetPosition();
-
-            mainMenu.Label("ASTEROIDS");
-            mainMenu.Label("Use arrows to move, Space to shoot");
-
-            if (mainMenu.Button("Start Game"))
-            {
-                RestartGame();
-                stateStack.Push(GameState.GameLoop);
-            }
-
-            if (mainMenu.Button("Options"))
-            {
-                stateStack.Push(GameState.OptionsMenu);
-            }
-
-            if (mainMenu.Button("Quit"))
-            {
-                stateStack.Push(GameState.Quit);
-            }
-
-            Raylib.EndDrawing();
-        }
-
-        static void DrawOptionsMenu()
-        {
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.DarkGray);
-
-            optionsMenu.ResetPosition();
-
-            optionsMenu.ResetPosition();
-
-            optionsMenu.Label("OPTIONS");
-            optionsMenu.Label("Adjust your settings");
-
-            if (optionsMenu.Button("Back"))
-            {
-                stateStack.Pop();
-            }
-
-            Raylib.EndDrawing();
-        }
-
         static void UpdateGameLoop()
         {
             if (player.IsDead)
@@ -363,7 +312,6 @@ namespace ASTEROIDS
 
         static void DrawGameLoop()
         {
-            Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
 
             player.Draw();
@@ -372,8 +320,6 @@ namespace ASTEROIDS
             DrawEnemies();
 
             Raylib.DrawText($"Score: {Score}", ScreenWidth - 100, 10, 20, Color.Gray);
-
-            Raylib.EndDrawing();
         }
 
 
