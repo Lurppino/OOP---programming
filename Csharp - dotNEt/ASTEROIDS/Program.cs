@@ -24,7 +24,11 @@ namespace ASTEROIDS
         public static int ScreenHeight = 600;
         public static List<Bullet> enemyBullets = new List<Bullet>();
 
-        
+        static List<Star> stars = new List<Star>();
+        static int starCount = 100;
+
+
+
         public static Vector2 PlayerPosition => player.Transform.Position;
 
         public static float Deg2Rad = (float)(Math.PI / 180.0f);
@@ -42,6 +46,12 @@ namespace ASTEROIDS
 
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
             Raylib.InitAudioDevice();
+
+            //star init
+            for (int i = 0; i < starCount; i++)
+            {
+                stars.Add(new Star(ScreenWidth, ScreenHeight));
+            }
 
             mainMenu = new MenuCreator(250, 100, 40, 200, 10);
             optionsMenu = new MenuCreator(250, 100, 40, 200, 10);
@@ -313,6 +323,12 @@ namespace ASTEROIDS
         static void DrawGameLoop()
         {
             Raylib.ClearBackground(Color.Black);
+
+            foreach (var star in stars)
+            {
+                star.Update();
+                star.Draw();
+            }
 
             player.Draw();
             DrawBullets();
