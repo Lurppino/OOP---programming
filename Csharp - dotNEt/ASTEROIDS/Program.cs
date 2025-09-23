@@ -74,23 +74,30 @@ namespace ASTEROIDS
 
             while (!Raylib.WindowShouldClose() && CurrentState != GameState.Quit)
             {
+                Raylib.BeginDrawing();
+
                 switch (CurrentState)
                 {
                     case GameState.MainMenu:
                         DrawMainMenu();
                         break;
+
                     case GameState.GameLoop:
                         UpdateGameLoop();
                         DrawGameLoop();
                         break;
+
                     case GameState.OptionsMenu:
                         DrawOptionsMenu();
                         break;
+
                     case GameState.PauseMenu:
-                        DrawPauseMenu();
+                        Raylib.ClearBackground(Color.DarkBlue);
+                        PauseMenuScreen.Draw(pauseMenu, stateStack);
                         break;
                 }
 
+                Raylib.EndDrawing();
                 Raylib.UpdateMusicStream(music);
             }
 
@@ -325,33 +332,6 @@ namespace ASTEROIDS
             Raylib.EndDrawing();
         }
 
-        static void DrawPauseMenu()
-        {
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.DarkBlue);
-
-            optionsMenu.ResetPosition();
-
-            pauseMenu.Label("PAUSE MENU");
-
-            if (pauseMenu.Button("Resume"))
-            {
-                stateStack.Pop();
-            }
-
-            if (pauseMenu.Button("Options"))
-            {
-                stateStack.Push(GameState.OptionsMenu);
-            }
-
-            if (pauseMenu.Button("Main Menu"))
-            {
-                stateStack.Clear();
-                stateStack.Push(GameState.MainMenu);
-            }
-
-            Raylib.EndDrawing();
-        }
         static void UpdateGameLoop()
         {
             if (player.IsDead)
