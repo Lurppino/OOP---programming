@@ -258,7 +258,13 @@ namespace ASTEROIDS
         {
             for (int i = 0; i < count; i++)
             {
-                Vector2 pos = new Vector2(rng.Next(ScreenWidth), rng.Next(ScreenHeight));
+                Vector2 pos;
+                do
+                {
+                    pos = new Vector2(rng.Next(ScreenWidth), rng.Next(ScreenHeight));
+                }
+                while (Vector2.Distance(pos, PlayerPosition) < 100);
+
                 float size = rng.Next(20, 40);
                 Vector2 dir = new Vector2(
                     (float)(rng.NextDouble() * 2 - 1),
