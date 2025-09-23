@@ -12,8 +12,8 @@ namespace ASTEROIDS
 
             mainMenu.ResetPosition();
 
-            mainMenu.Label("ASTEROIDS");
-            mainMenu.Label("Use arrows to move, Space to shoot");
+            mainMenu.Label("ASTEROIDS", true);
+            mainMenu.Label("Use arrows to move, Space to shoott", true);
 
             if (mainMenu.Button("Start Game"))
             {
