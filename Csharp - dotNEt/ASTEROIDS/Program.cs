@@ -102,7 +102,7 @@ namespace ASTEROIDS
                         break;
 
                     case GameState.PauseMenu:
-                        PauseMenuScreen.Draw(pauseMenu, stateStack);
+                        PauseMenuScreen.Draw(pauseMenu, stateStack, true);
                         break;
                 }
 
@@ -336,6 +336,16 @@ namespace ASTEROIDS
 
             Raylib.DrawText($"Score: {Score}", ScreenWidth - 100, 10, 20, Color.Gray);
         }
+
+        public static void DrawGameLoopBackgroundOnly()
+        {
+            Raylib.ClearBackground(Color.Black);
+            player.Draw();
+            DrawBullets();
+            UpdateAndDrawAsteroids();
+            DrawEnemies();
+        }
+
 
 
     }

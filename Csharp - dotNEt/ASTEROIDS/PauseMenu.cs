@@ -5,9 +5,14 @@ namespace ASTEROIDS
 {
     public static class PauseMenuScreen
     {
-        public static void Draw(MenuCreator pauseMenu, Stack<GameState> stateStack)
+        public static void Draw(MenuCreator pauseMenu, Stack<GameState> stateStack, bool drawGameBehind = false)
         {
             pauseMenu.ResetPosition();
+
+            if (drawGameBehind)
+            {
+                Program.DrawGameLoopBackgroundOnly();
+            }
 
             pauseMenu.Label("PAUSE MENU");
 
