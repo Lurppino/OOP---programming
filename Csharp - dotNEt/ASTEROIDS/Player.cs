@@ -45,23 +45,32 @@ namespace ASTEROIDS
             Transform.Move();
         }
 
-        public override void Draw()
+        public void Draw()
         {
-            Vector2 tip = new Vector2(0, -Size);
-            Vector2 left = new Vector2(-Size / 2, Size / 2);
-            Vector2 right = new Vector2(Size / 2, Size / 2);
+            Texture2D shipTex = Textures.Ship_Blue;
 
-            
-            tip = RotateVector(tip, Transform.RotationRadians * (180f / (float)Math.PI));
-            left = RotateVector(left, Transform.RotationRadians * (180f / (float)Math.PI));
-            right = RotateVector(right, Transform.RotationRadians * (180f / (float)Math.PI));
+            // center of rotation
+            Vector2 origin = new Vector2(shipTex.Width / 2f, shipTex.Height / 2f);
 
-            tip += Transform.Position;
-            left += Transform.Position;
-            right += Transform.Position;
+            // destination rectangle
+            Rectangle dest = new Rectangle(
+                Transform.Position.X,
+                Transform.Position.Y,
+                shipTex.Width,
+                shipTex.Height
+            );
 
-            Raylib.DrawTriangle(tip, left, right, Color.White);
+            Raylib.DrawTexturePro(
+                shipTex,
+                new Rectangle(0, 0, shipTex.Width, shipTex.Height), // source rect
+                dest,
+                origin,
+                Transform.RotationRadians * (180f / MathF.PI), // convert to degrees
+                Color.White
+            );
         }
+
+
 
         private Vector2 RotateVector(Vector2 vector, float angleDegrees)
         {

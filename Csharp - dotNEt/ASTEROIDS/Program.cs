@@ -42,6 +42,8 @@ namespace ASTEROIDS
 
         static void Main()
         {
+            Textures.Load();
+
             stateStack.Push(GameState.MainMenu);
 
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
@@ -108,7 +110,7 @@ namespace ASTEROIDS
 
                 Raylib.EndDrawing();
                 Raylib.UpdateMusicStream(music);
-            }
+            }   
 
             Raylib.UnloadMusicStream(music);
             Raylib.UnloadSound(shootSound);
