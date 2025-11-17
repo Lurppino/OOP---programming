@@ -28,7 +28,22 @@ namespace ASTEROIDS
 
         public override void Draw()
         {
-            Raylib.DrawCircleV(Transform.Position, 20f, Color.Red);
+            Texture2D tex = Textures.UFO;
+
+            Raylib.DrawTexturePro(
+                tex,
+                new Rectangle(0, 0, tex.Width, tex.Height),
+                new Rectangle(
+                    Transform.Position.X,
+                    Transform.Position.Y,
+                    tex.Width,
+                    tex.Height
+                ),
+                new Vector2(tex.Width / 2f, tex.Height / 2f),
+                0f,
+                Color.White
+            );
         }
+
     }
 }

@@ -23,8 +23,26 @@ namespace ASTEROIDS
 
         public override void Draw()
         {
-            Raylib.DrawCircleV(Transform.Position, 5f, Color.White);
+            Texture2D tex = Textures.Laser;
+
+            float angleRadians = MathF.Atan2(Transform.Velocity.Y, Transform.Velocity.X) + MathF.PI / 2;
+
+            Raylib.DrawTexturePro(
+                tex,
+                new Rectangle(0, 0, tex.Width, tex.Height),
+                new Rectangle(
+                    Transform.Position.X,
+                    Transform.Position.Y,
+                    tex.Width,
+                    tex.Height
+                ),
+                new Vector2(tex.Width / 2f, tex.Height / 2f),
+                angleRadians * (180f / MathF.PI),
+                Color.White
+            );
         }
+
+
 
         public bool IsDead()
         {

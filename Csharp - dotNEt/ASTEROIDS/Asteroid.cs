@@ -26,8 +26,30 @@ namespace ASTEROIDS
 
         public override void Draw()
         {
-            Raylib.DrawCircleV(Transform.Position, Size, AsteroidColor);
+            Texture2D tex;
+
+            if (Size <= 20)
+                tex = Textures.MeteorMedium;
+            else if (Size <= 35)
+                tex = Textures.MeteorLarge;
+            else
+                tex = Textures.MeteorLarge;
+
+            Raylib.DrawTexturePro(
+                tex,
+                new Rectangle(0, 0, tex.Width, tex.Height),
+                new Rectangle(
+                    Transform.Position.X,
+                    Transform.Position.Y,
+                    tex.Width,
+                    tex.Height
+                ),
+                new Vector2(tex.Width / 2f, tex.Height / 2f),
+                0f,
+                Color.White
+            );
         }
+
 
         public void BreakIntoSmallerPieces(List<Asteroid> asteroids)
         {
