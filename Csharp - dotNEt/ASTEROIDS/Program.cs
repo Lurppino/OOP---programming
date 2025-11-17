@@ -42,12 +42,14 @@ namespace ASTEROIDS
 
         static void Main()
         {
-            Textures.Load();
 
             stateStack.Push(GameState.MainMenu);
 
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "Asteroids");
             Raylib.InitAudioDevice();
+
+            Textures.Load();
+            Texture2D shipTex = Raylib.LoadTexture("Assets/Sprites/playerShip1_blue.png");
 
             //star init
             for (int i = 0; i < starCount; i++)
@@ -87,7 +89,6 @@ namespace ASTEROIDS
             while (!Raylib.WindowShouldClose() && CurrentState != GameState.Quit)
             {
                 Raylib.BeginDrawing();
-
                 switch (CurrentState)
                 {
                     case GameState.MainMenu:

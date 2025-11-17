@@ -45,30 +45,27 @@ namespace ASTEROIDS
             Transform.Move();
         }
 
-        public void Draw()
+        public override void Draw()
         {
-            Texture2D shipTex = Textures.Ship_Blue;
-
-            // center of rotation
-            Vector2 origin = new Vector2(shipTex.Width / 2f, shipTex.Height / 2f);
-
-            // destination rectangle
-            Rectangle dest = new Rectangle(
-                Transform.Position.X,
-                Transform.Position.Y,
-                shipTex.Width,
-                shipTex.Height
-            );
+            if (Textures.Ship_Blue.Id == 0)
+                return;
 
             Raylib.DrawTexturePro(
-                shipTex,
-                new Rectangle(0, 0, shipTex.Width, shipTex.Height), // source rect
-                dest,
-                origin,
-                Transform.RotationRadians * (180f / MathF.PI), // convert to degrees
+                Textures.Ship_Blue,
+                new Rectangle(0, 0, Textures.Ship_Blue.Width, Textures.Ship_Blue.Height),
+                new Rectangle(
+                    Transform.Position.X,
+                    Transform.Position.Y,
+                    Textures.Ship_Blue.Width,
+                    Textures.Ship_Blue.Height
+                ),
+                new Vector2(Textures.Ship_Blue.Width / 2f, Textures.Ship_Blue.Height / 2f),
+                Transform.RotationRadians * (180f / MathF.PI),
                 Color.White
             );
         }
+
+
 
 
 
