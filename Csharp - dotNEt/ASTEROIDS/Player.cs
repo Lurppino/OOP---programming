@@ -1,7 +1,8 @@
-﻿using Raylib_cs;
+﻿using LukaLib;
+using Raylib_cs;
 using System;
 using System.Numerics;
-using LukaLib;
+using static ASTEROIDS.Program;
 
 namespace ASTEROIDS
 {
@@ -47,23 +48,26 @@ namespace ASTEROIDS
 
         public override void Draw()
         {
-            if (Textures.Ship_Blue.Id == 0)
-                return;
+            Texture2D tex = Textures.Ship_Blue;
+
+            switch (Program.SelectedShipColor)
+            {
+                case ShipColor.Blue: tex = Textures.Ship_Blue; break;
+                case ShipColor.Green: tex = Textures.Ship_Green; break;
+                case ShipColor.Red: tex = Textures.Ship_Red; break;
+                case ShipColor.Yellow: tex = Textures.Ship_Yellow; break;
+            }
 
             Raylib.DrawTexturePro(
-                Textures.Ship_Blue,
-                new Rectangle(0, 0, Textures.Ship_Blue.Width, Textures.Ship_Blue.Height),
-                new Rectangle(
-                    Transform.Position.X,
-                    Transform.Position.Y,
-                    Textures.Ship_Blue.Width,
-                    Textures.Ship_Blue.Height
-                ),
-                new Vector2(Textures.Ship_Blue.Width / 2f, Textures.Ship_Blue.Height / 2f),
+                tex,
+                new Rectangle(0, 0, tex.Width, tex.Height),
+                new Rectangle(Transform.Position.X, Transform.Position.Y, tex.Width, tex.Height),
+                new Vector2(tex.Width / 2f, tex.Height / 2f),
                 Transform.RotationRadians * (180f / MathF.PI),
                 Color.White
             );
         }
+
 
 
 

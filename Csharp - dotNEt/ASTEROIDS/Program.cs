@@ -13,6 +13,9 @@ namespace ASTEROIDS
         static Stack<GameState> stateStack = new Stack<GameState>();
         static GameState CurrentState => stateStack.Peek();
 
+        public enum ShipColor { Blue, Green, Red, Yellow }
+        public static ShipColor SelectedShipColor = ShipColor.Blue;
+
         static MenuCreator mainMenu = new MenuCreator(250, 200, 300, 50, 20);
         static MenuCreator optionsMenu = new MenuCreator(250, 200, 300, 50, 20);
         static MenuCreator pauseMenu = new MenuCreator(250, 200, 300, 50, 20);
