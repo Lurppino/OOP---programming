@@ -16,7 +16,7 @@ A 2D space shooter game built with C# and Raylib. Inspired by the classic arcade
 ## Screenshots
 
 ![Screenshot of the start of the game](Screenshots/mainmenu.png)
-![Screenshot of an asteroid broken in half](Screenshots/Screenshot%202.png)
+![Screenshot of an asteroid broken in half](Screenshots/Screenshot1.png)
 
 ## Technologies Used
 - C#  
