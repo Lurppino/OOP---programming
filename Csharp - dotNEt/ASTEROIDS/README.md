@@ -11,7 +11,7 @@ A 2D space shooter game built with C# and Raylib. Inspired by the classic arcade
 - Simple, responsive controls (wasd, space)
 
 ## How to Run
-*The game requires RayGuiCreator for menus, which is not included in this repository.
+[Itch.io](https://lurppino.itch.io/asteroids)
 
 ## Screenshots
 
